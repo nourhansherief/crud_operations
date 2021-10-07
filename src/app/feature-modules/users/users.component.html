@@ -1,10 +1,10 @@
 <div class="animated fadeIn table-container mat-elevation-z20">
   <mat-card>
-    <!-- <mat-card-header>
+     <mat-card-header>
       <i class="material-icons">supervised_user_circle</i>
       <mat-card-title>Clients</mat-card-title>
       <mat-card-subtitle>Add, update or delete clients</mat-card-subtitle>
-    </mat-card-header> -->
+    </mat-card-header> 
 
     <mat-card-content>
       <!-- Table loading spinner -->
@@ -14,14 +14,14 @@
 
       <div class="table-header">
         <!-- Table search input -->
-        <mat-form-field class="filter-field">
+        <!-- <mat-form-field class="filter-field">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter by name, age or gender"
             [(ngModel)]="search">
           <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear"
             (click)="search=''; applyFilter('')">
             <mat-icon>close</mat-icon>
           </button>
-        </mat-form-field>
+        </mat-form-field> -->
 
         <!-- Add button -->
         <button mat-raised-button (click)="save()" style="margin-bottom: 15px;" color="primary">
@@ -29,27 +29,38 @@
         </button>
       </div>
 
-      <mat-table #table [dataSource]="data" class="person-table" matSort matSortActive="id" matSortDisableClear
+      <mat-table #table [dataSource]="dataSource" class="person-table" matSort matSortDisableClear
         matSortDirection="desc">
         <!-- Table content -->
         <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>No.</mat-header-cell>
-          <mat-cell *matCellDef="let row; let i = index;"> {{ row.id }}</mat-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.id }}</mat-cell>
+        </ng-container>
+
+         <ng-container matColumnDef="first_name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{ row.first_name }}</mat-cell>
+        </ng-container>
+
+         <ng-container matColumnDef="last_name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{ row.last_name }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="email">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Age</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Email</mat-header-cell>
           <mat-cell *matCellDef="let row">{{ row.email }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="avater">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>avater</mat-header-cell>
-          <mat-cell *matCellDef="let row">{{ row.avater }}</mat-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Avatar</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <img  [src]="row.avatar" />
+          </mat-cell>
         </ng-container>
 
-
-        <!-- Table actions -->
-        <ng-container matColumnDef="personid">
+         <!-- actions -->
+        <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef>
             Actions
           </mat-header-cell>
@@ -65,6 +76,9 @@
               </button>
               <button mat-menu-item (click)="delete(row)">
                 <mat-icon aria-label="Delete">clear</mat-icon> Delete
+              </button>
+               <button mat-menu-item (click)="view(row)">
+                <mat-icon aria-label="View">View</mat-icon> View
               </button>
             </mat-menu>
           </mat-cell>
