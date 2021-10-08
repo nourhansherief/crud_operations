@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from "src/app/core/guards/auth.guard";
-import { LoginComponent } from "src/app/core/components/login.component";
+import { LoginComponent } from "src/app/core/components/login/login.component";
+import { NotFoundComponent } from "src/app/core/components/not-found/not-found.component";
+
 
 const routes: Routes = [
   {
@@ -16,8 +18,8 @@ const routes: Routes = [
         (u) => u.UsersModule
       )
   },
-  // { path: '404', component: NotFoundComponent },
-  // { path: '**', redirectTo: '/404' }
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '/404' }
 ];
 
 @NgModule({

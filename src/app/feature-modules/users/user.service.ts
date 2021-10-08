@@ -27,6 +27,8 @@ export class UserService {
 
   // update user data
   public updateUser(user) {
+    let url = APIConfig.userDetails.url(user.id);
+    return this.http.patch(url , user);
 
   }
 
@@ -39,7 +41,7 @@ export class UserService {
   // delete user data
   public createNewUser(user) {
     let url = APIConfig.createNewUser.url;
-    return this.http.post(url ,user);
+    return this.http.post(url, user);
 
   }
 

@@ -8,11 +8,12 @@ import { HttpClientModule } from "@angular/common/http";
 import { UserFormComponent } from './user-form/user-form.component';
 import { UserDeleteFormComponent } from './user-delete-form/user-delete-form.component';
 import { UserViewFormComponent } from './user-view-form/user-view-form.component';
+import { UsersListHeaderComponent } from './users-list-header/users-list-header.component';
 
 
 
 @NgModule({
-  declarations: [UsersComponent, UserFormComponent, UserDeleteFormComponent, UserViewFormComponent],
+  declarations: [UsersComponent, UserFormComponent, UserDeleteFormComponent, UserViewFormComponent, UsersListHeaderComponent],
   imports: [
     CommonModule,
     UsersRoutingModule,

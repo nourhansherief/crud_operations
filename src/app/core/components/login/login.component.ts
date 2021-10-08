@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { AuthService } from "src/app/core/services/auth.service";
 import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { SnackbarComponent } from "src/app/core/components/snackbar/snackbar.component";
+import { ErrorMessage } from "src/configurations/defines";
 
 @Component({
   selector: 'app-login',
@@ -22,13 +24,10 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (localStorage.getItem('token')) {
-      this.router.navigate(['/users']);
-    }
-
     this.initLoginForm();
   }
 
+  // form Validations
   private initLoginForm(): void {
     this.form = this.fb.group({
       email: [
@@ -36,15 +35,13 @@ export class LoginComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(20)
         ]
       ],
       password: [
         null,
         [
           Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(12)
+          Validators.minLength(3)
         ]
       ]
     });
@@ -55,20 +52,24 @@ export class LoginComponent implements OnInit {
       return !this.form.get(field).valid;
     }
   }
-
+  // if user login successfully redirect to users page
   public login() {
     if (this.form.valid) {
       this.isLogin = true;
       this.authService.login(this.form.value).subscribe(
         (data: any) => {
           this.isLogin = false;
-            this.authService.loggedIn.next(true);
-            localStorage.setItem('token', data.token);
-            this.router.navigate(['/users']);
+          this.authService.loggedIn.next(true);
+          localStorage.setItem('token', data.token);
+          this.router.navigate(['/users']);
         },
         (error) => {
-          console.log(error);
+          error.message = ` Error Happened !! ${error.error.error}`;
           this.isLogin = false;
+          this.snack.openFromComponent(SnackbarComponent, {
+            data: { data: error  , ...ErrorMessage},
+            duration: 3000
+          });
         }
       );
     }

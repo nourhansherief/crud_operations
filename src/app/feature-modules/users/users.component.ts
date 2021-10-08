@@ -1,3 +1,4 @@
+import { SuccessMessage, ErrorMessage } from './../../../configurations/defines';
 import { AuthService } from './../../core/services/auth.service';
 import { UserViewFormComponent } from './user-view-form/user-view-form.component';
 import { UserFormComponent } from './user-form/user-form.component';
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserDeleteFormComponent } from "src/app/feature-modules/users/user-delete-form/user-delete-form.component";
+import { SnackbarComponent } from "src/app/core/components/snackbar/snackbar.component";
 
 
 
@@ -35,23 +37,17 @@ export class UsersComponent implements OnInit, AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  constructor(private userService: UserService, 
-    public dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef,
-   private authService:AuthService ) { }
+  constructor(private userService: UserService,
+    public dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef, public snack: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
 
   }
 
-  ngAfterViewChecked() {
-
-  }
 
   ngAfterViewInit() {
-
-    // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
       startWith({}),
@@ -62,74 +58,96 @@ export class UsersComponent implements OnInit, AfterViewInit {
           .pipe(catchError(() => observableOf(null)));
       }),
       map(data => {
-        // Flip flag to show that loading has finished.
         this.isLoadingResults = false;
         this.isRateLimitReached = data === null;
-
         if (data === null) {
           return [];
         }
-
-        // Only refresh the result length if there is new data. In case of rate
-        // limit errors, we do not want to reset the paginator to zero, as that
-        // would prevent users from re-triggering requests.
         this.resultsLength = data.total;
         return data.data;
       })
       ).subscribe(data => this.dataSource.data = data);
   }
 
-  delete(user): void {
-    const dialogRef = this.dialog.open(UserDeleteFormComponent, {
+  openDeleteDialog(title, message, action) {
+    return this.dialog.open(UserDeleteFormComponent, {
       data: {
-        title: 'Delete record',
-        message: 'Are you sure you want to delete this record?'
+        title,
+        message,
+        action
       }
     });
+  }
+
+  removeDeletedRecord(user) {
+    let index = this.dataSource.data.indexOf(user);
+    this.dataSource.data.splice(index, 1);
+    this.dataSource = new MatTableDataSource(this.dataSource.data);
+    this.resultsLength = this.resultsLength - 1;
+  }
+
+  delete(user): void {
+    const dialogRef = this.openDeleteDialog('Delete record', 'Are you sure you want to delete this record?', 'delete');
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.deleteUser(user.id).subscribe((data: any) => {
-          let index = this.dataSource.data.indexOf(user);
-          this.dataSource.data.splice(index, 1);
-          this.dataSource = new MatTableDataSource(this.dataSource.data);
-          this.resultsLength = this.resultsLength - 1;
+        this.userService.deleteUser(user.id).subscribe((res: any) => {
+          let data = {
+            message: 'Record Has been Deleted Successfuly'
+          }
+          this.removeDeletedRecord(user);
+          this.snack.openFromComponent(SnackbarComponent, {
+            data: { data, ...SuccessMessage },
+            duration: 3000
+          });
+
+        }, (err) => {
+          let data = {
+            message: 'Something Went Wrong'
+          }
+          this.snack.openFromComponent(SnackbarComponent, {
+            data: { data, ...ErrorMessage },
+            duration: 3000
+          });
         });
       }
     });
 
   }
 
-  edit(user): void {
-    this.userService.getSingleUser(user.id).subscribe((data: any) => {
-      console.log("ssssss", data);
-      const dialogRef = this.dialog.open(UserFormComponent, {
-        data: { title: 'Update User', action: 'edit', data: data.data }
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          // this.paginator._changePageSize(this.paginator.pageSize);
-        }
-      });
+  openDialogForm(title, action, data) {
+    const dialogRef = this.dialog.open(UserViewFormComponent, {
+      data: { title: 'View User', action: 'view', data }
     });
   }
 
   view(user): void {
     this.userService.getSingleUser(user.id).subscribe((data: any) => {
-      const dialogRef = this.dialog.open(UserViewFormComponent, {
-        data: { title: 'View User', action: 'view', data: data.data }
+      this.openDialogForm('View User', 'view', data.data);
+    });
+  }
+
+  edit(user): void {
+    this.userService.getSingleUser(user.id).subscribe((data: any) => {
+      const dialogRef = this.dialog.open(UserFormComponent, {
+        data: { title: 'Update User', action: 'edit', data: data.data }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (user) {
+          let index = this.dataSource.data.findIndex((el) => {
+            return el.id == user.id
+          })
+          this.dataSource.data[index] = { ...result };
+          this.dataSource = new MatTableDataSource(this.dataSource.data);
+        }
       });
     });
   }
 
-
-
   save(): void {
     const dialogRef = this.dialog.open(UserFormComponent, {
-      width: '400px',
-      data: { title: 'Add person', action: 'save' }
+      data: { title: 'Add User', action: 'save' }
     });
-
     dialogRef.afterClosed().subscribe(user => {
       if (user) {
         this.dataSource.data.push(user);
@@ -139,9 +157,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     });
   }
 
-  logout() {
-    this.authService.logout();
-  }
+
 
 
 

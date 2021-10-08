@@ -1,0 +1,38 @@
+ <div layout="column" layout-align="center center" layout-fill="layout-fill">
+    <div layout="column" class="loginBox md-whiteframe-z1">
+      <mat-toolbar class="form-title">
+        <mat-toolbar-row>
+          <span>Login</span>
+          <span class="example-spacer"></span>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <div class="content">
+        <form [formGroup]="form" (ngSubmit)="login()">
+          <mat-form-field class="full-width-input">
+            <input matInput type="text" placeholder="User" formControlName="email" required>
+            <mat-error *ngIf="isFieldInvalid('email')">
+              Please enter a valid email ( at least 3 characters)
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input separate">
+            <input matInput type="password" placeholder="Password" formControlName="password" required>
+            <mat-error *ngIf="isFieldInvalid('password')">
+              Please enter a valid password ( at least 3 characters)
+            </mat-error>
+          </mat-form-field>
+
+          <div layout="row" layout-align="center center">
+            <button mat-raised-button class="md-raised form-button" type="submit"  [disabled]="form.invalid || isLogin">
+            <div *ngIf="isLogin; else loginText">Loading ...</div>
+          </button> 
+          </div>
+
+        </form>
+        <ng-template #loginText>
+          Login
+        </ng-template>
+      </div>
+      
+    </div>
+  </div>

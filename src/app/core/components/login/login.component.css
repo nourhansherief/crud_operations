@@ -1,0 +1,21 @@
+.loginBox {
+    margin: 4rem auto;
+    max-width: 500px;
+    text-align: center;
+    background: rgba(250, 250, 250, 0.96);
+    border: 3px solid #07ad90;
+    border-radius: 3px;
+}
+
+.form-title ,.form-button {
+    background: #07ad90 !important;
+    color: rgba(250, 250, 250, 0.96);
+}
+
+.content{
+    padding: 3rem;
+}
+
+.full-width-input {
+    width: 100%;
+}

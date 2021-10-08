@@ -19,22 +19,18 @@
     <br />
 
    <mat-form-field>
-      <input matInput placeholder="Email" formControlName="email" class="person-input">
+      <input matInput placeholder="Email" formControlName="email" class="person-input" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
       <mat-hint align="end">{{frm.controls.email.value?.length || 0}}/10</mat-hint>
       <mat-error *ngIf="frm.controls.email.invalid">{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
 
     <br />
 
-    <!-- <mat-form-field>
+     <mat-form-field>
       <input matInput placeholder="avatar" formControlName="avatar" class="person-input">
       <mat-hint align="end">{{frm.controls.avatar.value?.length || 0}}/10</mat-hint>
       <mat-error *ngIf="frm.controls.last_name.invalid">{{getAvatarMessage()}}</mat-error>
-    </mat-form-field> -->
-
-    <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="upload($event)" />
-<button mat-flat-button color="primary" (click)="csvInput.click()">Choose Spreadsheet File (CSV)</button>
-
+    </mat-form-field> 
 
     <mat-form-field style="visibility: hidden; height: 0vh !important">
       <input matInput type="text" formControlName='id'>
@@ -43,7 +39,7 @@
 </div>
 
 <div mat-dialog-actions align="end">
-  <button mat-button [mat-dialog-close]>Cancelar</button>
+  <button mat-button [mat-dialog-close]>Cancel</button>
   <button mat-raised-button color="primary" (click)='save(frm)' class="btnSave" [disabled]="!frm.valid">
     <mat-icon aria-label="icon-button">save </mat-icon>
     <span>Save</span>
