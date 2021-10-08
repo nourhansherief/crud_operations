@@ -14,33 +14,33 @@
           </button>
         </div>
 
-        <mat-table #table [dataSource]="dataSource" class="person-table" matSort matSortDisableClear
+        <mat-table #table [dataSource]="dataSource" class="full-width-table" matSort matSortDisableClear
           matSortDirection="desc">
           <!-- Table content -->
           <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > ID </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{ row.id }}</mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="first_name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > First Name </mat-header-cell>
             <mat-cell *matCellDef="let row">{{ row.first_name }}</mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="last_name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Last Name</mat-header-cell>
             <mat-cell *matCellDef="let row">{{ row.last_name }}</mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="email">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Email</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Email</mat-header-cell>
             <mat-cell *matCellDef="let row">{{ row.email }}</mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="avater">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Avatar</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Avatar</mat-header-cell>
             <mat-cell *matCellDef="let row">
-              <img  [src]="row.avatar" />
+              <img class="card-image"  [src]="row.avatar" />
             </mat-cell>
           </ng-container>
 

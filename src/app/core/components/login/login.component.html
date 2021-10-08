@@ -9,7 +9,7 @@
       <div class="content">
         <form [formGroup]="form" (ngSubmit)="login()">
           <mat-form-field class="full-width-input">
-            <input matInput type="text" placeholder="User" formControlName="email" required>
+            <input matInput type="text" placeholder="Email" formControlName="email" required>
             <mat-error *ngIf="isFieldInvalid('email')">
               Please enter a valid email ( at least 3 characters)
             </mat-error>
