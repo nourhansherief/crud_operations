@@ -1,3 +1,4 @@
+import { User } from './../../core/models/user-message.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -26,7 +27,7 @@ export class UserService {
 
 
   // update user data
-  public updateUser(user) {
+  public updateUser(user:User) {
     let url = APIConfig.userDetails.url(user.id);
     return this.http.patch(url , user);
 
@@ -39,7 +40,7 @@ export class UserService {
   }
 
   // delete user data
-  public createNewUser(user) {
+  public createNewUser(user:User) {
     let url = APIConfig.createNewUser.url;
     return this.http.post(url, user);
 
