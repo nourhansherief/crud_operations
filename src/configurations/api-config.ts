@@ -8,7 +8,10 @@ export const APIConfig = {
     url: (userId) => `${environment.api}api/users/${userId}`
   },
   createNewUser: {
-    url: (pageIndex) => `${environment.api}api/users?page=${pageIndex}`
+    url: `${environment.api}api/users`
+  },
+  login:{
+    url: `${environment.api}api/login`
   }
 };
 

@@ -18,29 +18,29 @@ export class UserService {
     return this.http.get(url);
   }
 
- // delete get Single User
-  public getSingleUser(userId){
-     let url = APIConfig.userDetails.url(userId);
+  // delete get Single User
+  public getSingleUser(userId) {
+    let url = APIConfig.userDetails.url(userId);
     return this.http.get(url);
   }
 
 
   // update user data
-  public updateUser(user){
+  public updateUser(user) {
 
   }
 
-   // delete user data
-  public deleteUser(userId){
+  // delete user data
+  public deleteUser(userId) {
     let url = APIConfig.userDetails.url(userId);
     return this.http.delete(url);
   }
 
-    // delete user data
-  public createNewUser(user){
+  // delete user data
+  public createNewUser(user) {
+    let url = APIConfig.createNewUser.url;
+    return this.http.post(url ,user);
 
   }
-
-
 
 }

@@ -18,13 +18,22 @@
 
     <br />
 
-    <mat-form-field>
-      <input matInput type="number" placeholder="Age" formControlName='age'>
-      <mat-hint align="end">{{frm.controls.age.value?.length || 0}}/10</mat-hint>
-      <mat-error *ngIf="frm.controls.age.invalid">{{getAgeErrorMessage()}}</mat-error>
+   <mat-form-field>
+      <input matInput placeholder="Email" formControlName="email" class="person-input">
+      <mat-hint align="end">{{frm.controls.email.value?.length || 0}}/10</mat-hint>
+      <mat-error *ngIf="frm.controls.email.invalid">{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
 
     <br />
+
+    <!-- <mat-form-field>
+      <input matInput placeholder="avatar" formControlName="avatar" class="person-input">
+      <mat-hint align="end">{{frm.controls.avatar.value?.length || 0}}/10</mat-hint>
+      <mat-error *ngIf="frm.controls.last_name.invalid">{{getAvatarMessage()}}</mat-error>
+    </mat-form-field> -->
+
+    <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="upload($event)" />
+<button mat-flat-button color="primary" (click)="csvInput.click()">Choose Spreadsheet File (CSV)</button>
 
 
     <mat-form-field style="visibility: hidden; height: 0vh !important">

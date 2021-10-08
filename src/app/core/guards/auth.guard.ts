@@ -16,18 +16,17 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
     // check if user is not logged in then redirect to login page
-    // return this.authenticationService.isLoggedIn.pipe(
-    //   take(1),
-    //   map((isLoggedIn: boolean) => !!isLoggedIn),
-    //   tap(authenticated => {
-    //     if (!authenticated) {
-    //       this.router.navigate(['/login']);
-    //       return false;
-    //     }
-    //     return true;
-    //   })
-    // );
-  return of(true);
+    return this.authenticationService.isLoggedIn.pipe(
+      take(1),
+      map((isLoggedIn: boolean) => !!isLoggedIn),
+      tap(authenticated => {
+        if (!authenticated) {
+          this.router.navigate(['/']);
+          return false;
+        }
+        return true;
+      })
+    );
 
   }
 }

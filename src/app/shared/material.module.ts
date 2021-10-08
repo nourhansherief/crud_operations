@@ -65,7 +65,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatTableModule,
         MatTabsModule,
         MatToolbarModule,
-        MatTooltipModule
+        MatTooltipModule,
     ],
     exports: [
         MatAutocompleteModule,
@@ -99,7 +99,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatTableModule,
         MatTabsModule,
         MatToolbarModule,
-        MatTooltipModule
+        MatTooltipModule,
     ]
 })
 export class MaterialComponentsModule { }

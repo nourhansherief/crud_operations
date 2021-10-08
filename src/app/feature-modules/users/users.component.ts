@@ -1,3 +1,4 @@
+import { AuthService } from './../../core/services/auth.service';
 import { UserViewFormComponent } from './user-view-form/user-view-form.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import { UserService } from './user.service';
@@ -34,7 +35,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  constructor(private userService: UserService, public dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef, ) { }
+  constructor(private userService: UserService, 
+    public dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef,
+   private authService:AuthService ) { }
 
   ngOnInit(): void {
 
@@ -113,7 +116,6 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   view(user): void {
     this.userService.getSingleUser(user.id).subscribe((data: any) => {
-      console.log("ssssss", data);
       const dialogRef = this.dialog.open(UserViewFormComponent, {
         data: { title: 'View User', action: 'view', data: data.data }
       });
@@ -122,18 +124,24 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
 
 
-  // save(): void {
-  //   const dialogRef = this.dialog.open(FormsComponent, {
-  //     width: '400px',
-  //     data: { title: 'Add person', action: 'save' }
-  //   });
+  save(): void {
+    const dialogRef = this.dialog.open(UserFormComponent, {
+      width: '400px',
+      data: { title: 'Add person', action: 'save' }
+    });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       this.paginator._changePageSize(this.paginator.pageSize);
-  //     }
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe(user => {
+      if (user) {
+        this.dataSource.data.push(user);
+        this.dataSource = new MatTableDataSource(this.dataSource.data);
+        this.resultsLength = this.resultsLength + 1;
+      }
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 
 
 
