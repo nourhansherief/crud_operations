@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit {
   }
   // if user login successfully redirect to users page
   public login() {
+    console.log("j" , this.form);
     if (this.form.valid) {
       this.isLogin = true;
       this.authService.login(this.form.value).subscribe(
